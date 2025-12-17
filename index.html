@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NY 2026 Gifts</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        /* Основной фон - Уютная комната */
+        body {
+            margin: 0;
+            padding: 0;
+            background: #0f172a url('https://images.unsplash.com/photo-1543589077-47d81606c1bf?auto=format&fit=crop&q=80&w=1000') no-repeat center center;
+            background-size: cover;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            overflow: hidden;
+            color: white;
+        }
+
+        /* Затемнение для уюта */
+        .overlay-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+
+        /* Контент поверх фона */
+        .content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            width: 100%;
+            padding-bottom: 40px;
+        }
+
+        .tree-container {
+            font-size: 180px;
+            filter: drop-shadow(0 0 30px #22c55e);
+            margin-bottom: 20px;
+            animation: tree-glow 3s infinite alternate;
+        }
+
+        @keyframes tree-glow {
+            from { filter: drop-shadow(0 0 20px #22c55e); }
+            to { filter: drop-shadow(0 0 40px #4ade80); }
+        }
+
+        .gifts-floor {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .gift {
+            font-size: 60px;
+            cursor: pointer;
+            transition: 0.3s;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5));
+        }
+
+        .gift:active {
+            transform: scale(0.9);
+        }
+
+        /* Стилизация всплывающего окна (в стиле Telegram Gifts) */
+        #gift-popup {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-card {
+            background: #1c1c1e;
+            width: 80%;
+            max-width: 300px;
+            border-radius: 24px;
+            padding: 24px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+            animation: pop-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes pop-in {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .gift-image {
+            font-size: 100px;
+            margin-bottom: 16px;
+        }
+
+        .gift-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .gift-rarity {
+            color: #3390ec;
+            font-size: 14px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .close-btn {
+            background: #3390ec;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="overlay-bg"></div>
+
+    <div class="content">
+        <h1 style="margin-bottom: 0;">2026</h1>
+        <p style="opacity: 0.8; margin-top: 5px;">Нажми на подарок под елкой</p>
+        
+        <div class="tree-container">🎄</div>
+
+        <div class="gifts-floor">
+            <div class="gift" onclick="claimGift('Снежный Дракон', '🐉')">🎁</div>
+            <div class="gift" onclick="claimGift('Золотой Кристалл', '💎')">🎁</div>
+            <div class="gift" onclick="claimGift('Полярная Звезда', '⭐')">🎁</div>
+        </div>
+    </div>
+
+    <div id="gift-popup">
+        <div class="popup-card">
+            <div class="gift-image" id="p-icon">🎁</div>
+            <div class="gift-title" id="p-title">Название подарка</div>
+            <div class="gift-rarity">Telegram Gift • 1 of 10,000</div>
+            <button class="close-btn" onclick="closePopup()">Круто!</button>
+        </div>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
+
+        function claimGift(name, icon) {
+            // Имитируем логику выдачи
+            document.getElementById('p-title').innerText = name;
+            document.getElementById('p-icon').innerText = icon;
+            
+            // Показываем окно
+            document.getElementById('gift-popup').style.display = 'flex';
+
+            // Тактильная отдача (вибрация как при получении подарка)
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.notificationOccurred('success');
+            }
+        }
+
+        function closePopup() {
+            document.getElementById('gift-popup').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
